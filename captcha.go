@@ -88,6 +88,15 @@ func NewLen(length int) (id string) {
 	return
 }
 
+// NewLenToBase64 return a base64 encoded image instantly
+func NewLenToBase64(length, width, height int) (id, base64str string) {
+	id = randomId()
+	globalStore.Set(id, RandomDigits(length))
+	d := globalStore.Get(id, false)
+	base64str = NewImage(id, d, width, height).WriteToBase64()
+	return
+}
+
 // Reload generates and remembers new digits for the given captcha id.  This
 // function returns false if there is no captcha with the given id.
 //
