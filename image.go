@@ -6,7 +6,7 @@ package captcha
 
 import (
 	"bytes"
-	"encoding/base64"
+	"github.com/vincent-petithory/dataurl"
 	"image"
 	"image/color"
 	"image/png"
@@ -103,7 +103,7 @@ func (m *Image) WriteTo(w io.Writer) (int64, error) {
 }
 
 func (m *Image) WriteToBase64() (base64str string) {
-	base64str = encodeBase64(m.encodedPNG())
+	base64str = dataurl.EncodeBytes(m.encodedPNG())
 	return
 }
 
@@ -271,16 +271,4 @@ func max3(x, y, z uint8) (m uint8) {
 		m = z
 	}
 	return
-}
-
-// encode is our main function for
-// base64 encoding a passed []byte
-func encodeBase64(bin []byte) []byte {
-	e64 := base64.StdEncoding
-
-	maxEncLen := e64.EncodedLen(len(bin))
-	encBuf := make([]byte, maxEncLen)
-
-	e64.Encode(encBuf, bin)
-	return encBuf
 }
