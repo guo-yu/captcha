@@ -135,7 +135,7 @@ func Verify(id string, digits []byte) bool {
 	if digits == nil || len(digits) == 0 {
 		return false
 	}
-	reald := globalStore.Get(id, true)
+	reald := globalStore.Get(id, false)
 	if reald == nil {
 		return false
 	}
