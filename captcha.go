@@ -140,11 +140,11 @@ func WriteAudio(w io.Writer, id string, lang string) error {
 //
 // The function deletes the captcha with the given id from the internal
 // storage, so that the same captcha can't be verified anymore.
-func Verify(id string, digits []byte) bool {
+func Verify(id string, digits []byte, removeAfterVerify bool) bool {
 	if digits == nil || len(digits) == 0 {
 		return false
 	}
-	reald := globalStore.Get(id, false)
+	reald := globalStore.Get(id, removeAfterVerify)
 	if reald == nil {
 		return false
 	}
@@ -154,7 +154,7 @@ func Verify(id string, digits []byte) bool {
 // VerifyString is like Verify, but accepts a string of digits.  It removes
 // spaces and commas from the string, but any other characters, apart from
 // digits and listed above, will cause the function to return false.
-func VerifyString(id string, digits string) bool {
+func VerifyString(id string, digits string, removeAfterVerify bool) bool {
 	if digits == "" {
 		return false
 	}
@@ -170,5 +170,5 @@ func VerifyString(id string, digits string) bool {
 			return false
 		}
 	}
-	return Verify(id, ns)
+	return Verify(id, ns, removeAfterVerify)
 }
